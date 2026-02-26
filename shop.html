@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TALAL HORES — Hoodies & T-Shirts</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --white:#ffffff; --off:#f9f9f7; --lg:#f2f2f0; --mg:#e0e0dc; --dg:#888884; --ch:#2a2a28; --blk:#111110; --acc:#c8a96e; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--white); color: var(--ch); overflow-x: hidden; }
+
+    /* NAVBAR */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--mg); transition: box-shadow .3s; }
+    nav.shadowed { box-shadow: 0 2px 20px rgba(0,0,0,.07); }
+    .logo { font-size: 1.25rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--blk); cursor: pointer; user-select: none; }
+    .logo span { color: var(--acc); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .77rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ch); cursor: pointer; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--acc); }
+    .cart-btn { position: relative; background: none; border: none; cursor: pointer; font-size: 1.3rem; padding: 4px; }
+    .cbadge { position: absolute; top: -4px; right: -6px; background: var(--acc); color: #fff; font-size: .58rem; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* PAGES */
+    .page { display: none; padding-top: 64px; min-height: 100vh; animation: fadeIn .3s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* HERO */
+    .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 64px); }
+    .hero-text { display: flex; flex-direction: column; justify-content: center; padding: 5rem 5% 5rem 8%; }
+    .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--acc); margin-bottom: 1.2rem; }
+    .hero-text h1 { font-size: clamp(2.6rem, 5vw, 4rem); font-weight: 900; line-height: 1.05; color: var(--blk); letter-spacing: -.03em; margin-bottom: 1.3rem; }
+    .hero-text h1 em { font-style: italic; color: var(--acc); }
+    .hero-sub { font-size: .97rem; color: var(--dg); max-width: 370px; line-height: 1.75; margin-bottom: 2.5rem; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-visual { background: var(--lg); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .hero-visual svg { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    .hero-badge { position: absolute; bottom: 28px; left: 28px; background: #fff; padding: 12px 18px; border-radius: 4px; box-shadow: 0 8px 30px rgba(0,0,0,.09); }
+    .hero-badge small { font-size: .64rem; color: var(--dg); letter-spacing: .06em; text-transform: uppercase; display: block; }
+    .hero-badge strong { font-size: 1rem; color: var(--blk); display: block; margin-top: 3px; }
+
+    /* BUTTONS */
+    .btn-prim { background: var(--blk); color: #fff; padding: 11px 22px; border: none; border-radius: 2px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: background .25s, transform .15s; font-family: inherit; }
+    .btn-prim:hover { background: var(--acc); transform: translateY(-1px); }
+    .btn-out { background: transparent; color: var(--blk); padding: 11px 22px; border: 1.5px solid var(--mg); border-radius: 2px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: border-color .25s; font-family: inherit; }
+    .btn-out:hover { border-color: var(--blk); }
+
+    /* FEATURES */
+    .feat-band { background: var(--blk); display: grid; grid-template-columns: repeat(4,1fr); }
+    .feat-item { padding: 2rem; border-right: 1px solid rgba(255,255,255,.07); text-align: center; }
+    .feat-item:last-child { border-right: none; }
+    .feat-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .feat-title { font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+    .feat-desc { font-size: .72rem; color: rgba(255,255,255,.42); margin-top: 5px; line-height: 1.5; }
+
+    /* SECTION HEADER */
+    .sec-head { text-align: center; padding: 4rem 5% 2rem; }
+    .sec-head h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 800; color: var(--blk); letter-spacing: -.02em; margin-top: 8px; }
+    .sec-head p { font-size: .92rem; color: var(--dg); max-width: 400px; margin: .7rem auto 0; line-height: 1.7; }
+
+    /* FILTER */
+    .filter-strip { display: flex; gap: 8px; justify-content: center; padding: 0 5% 2.5rem; flex-wrap: wrap; }
+    .pill { padding: 7px 20px; border: 1.5px solid var(--mg); border-radius: 100px; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; background: #fff; color: var(--ch); transition: all .2s; font-family: inherit; }
+    .pill:hover, .pill.active { background: var(--blk); color: #fff; border-color: var(--blk); }
+
+    /* PRODUCT GRID */
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.6rem; padding: 0 5% 5rem; }
+    .prod-card { background: #fff; border: 1px solid var(--mg); border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform .25s, box-shadow .25s; }
+    .prod-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,.09); }
+    .prod-img { aspect-ratio: 3/4; background: var(--lg); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .prod-img svg { transition: transform .35s; }
+    .prod-card:hover .prod-img svg { transform: scale(1.07); }
+    .prod-tag { position: absolute; top: 10px; left: 10px; background: var(--acc); color: #fff; font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+    .prod-info { padding: 1rem; }
+    .prod-name { font-size: .92rem; font-weight: 600; color: var(--blk); }
+    .prod-type { font-size: .68rem; color: var(--dg); letter-spacing: .07em; text-transform: uppercase; margin-top: 2px; }
+    .color-dots { display: flex; gap: 5px; margin-top: 8px; }
+    .cdot { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid transparent; cursor: pointer; transition: transform .15s; }
+    .cdot:hover { transform: scale(1.2); }
+    .cdot.sel { border-color: var(--blk); }
+    .prod-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+    .prod-price { font-size: 1rem; font-weight: 700; color: var(--blk); }
+    .prod-price .old { font-size: .76rem; color: var(--dg); text-decoration: line-through; margin-right: 5px; font-weight: 400; }
+    .btn-add { background: var(--blk); color: #fff; border: none; border-radius: 2px; padding: 6px 12px; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .2s; font-family: inherit; }
+    .btn-add:hover { background: var(--acc); }
+
+    /* ABOUT */
+    .about-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 55vh; background: var(--off); }
+    .about-txt { padding: 5rem 8%; display: flex; flex-direction: column; justify-content: center; }
+    .about-txt h1 { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 900; color: var(--blk); letter-spacing: -.03em; line-height: 1.1; margin-bottom: 1.3rem; }
+    .about-txt p { font-size: .95rem; color: var(--dg); line-height: 1.8; margin-bottom: 10px; }
+    .about-visual { background: var(--mg); display: flex; align-items: center; justify-content: center; font-size: 7rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); padding: 3.5rem 8%; border-top: 1px solid var(--mg); gap: 1.5rem; }
+    .stat { text-align: center; }
+    .stat-n { font-size: 2.6rem; font-weight: 900; color: var(--acc); letter-spacing: -.04em; }
+    .stat-l { font-size: .72rem; color: var(--dg); letter-spacing: .1em; text-transform: uppercase; margin-top: 5px; }
+    .vals { display: grid; grid-template-columns: repeat(3,1fr); padding: 3.5rem 8%; background: var(--off); gap: 1.8rem; }
+    .val-card { background: #fff; padding: 1.8rem; border-radius: 4px; border: 1px solid var(--mg); }
+    .val-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .val-title { font-size: .9rem; font-weight: 700; color: var(--blk); margin-bottom: 6px; }
+    .val-txt { font-size: .82rem; color: var(--dg); line-height: 1.7; }
+
+    /* CONTACT */
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1.4fr; min-height: calc(100vh - 64px); }
+    .contact-l { background: var(--blk); padding: 5rem 6%; display: flex; flex-direction: column; justify-content: center; }
+    .contact-l h2 { font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 1.1rem; }
+    .contact-l > p { font-size: .92rem; color: rgba(255,255,255,.48); line-height: 1.8; margin-bottom: 2.3rem; }
+    .c-det { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .c-det span:last-child { font-size: .82rem; color: rgba(255,255,255,.7); }
+    .contact-r { background: var(--off); padding: 5rem 6%; display: flex; flex-direction: column; justify-content: center; }
+    .contact-r h3 { font-size: 1.4rem; font-weight: 800; color: var(--blk); margin-bottom: 1.8rem; }
+    .form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .fgrp { margin-bottom: 12px; }
+    .fgrp label { display: block; font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--dg); margin-bottom: 5px; }
+    .fgrp input, .fgrp textarea, .fgrp select { width: 100%; padding: 10px 12px; background: #fff; border: 1.5px solid var(--mg); border-radius: 3px; font-size: .88rem; color: var(--blk); font-family: inherit; outline: none; transition: border-color .2s; }
+    .fgrp input:focus, .fgrp textarea:focus, .fgrp select:focus { border-color: var(--acc); }
+    .fgrp textarea { resize: vertical; min-height: 110px; }
+    .form-sub { background: var(--blk); color: #fff; border: none; width: 100%; padding: 13px; cursor: pointer; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-radius: 3px; transition: background .25s; font-family: inherit; }
+    .form-sub:hover { background: var(--acc); }
+
+    /* CART */
+    .cart-wrap { max-width: 1100px; margin: 0 auto; padding: 2.5rem 5%; display: grid; grid-template-columns: 1.6fr 1fr; gap: 2.5rem; }
+    .cart-h { font-size: 1.7rem; font-weight: 800; color: var(--blk); margin-bottom: 1.8rem; letter-spacing: -.02em; }
+    .cart-item { display: flex; gap: 14px; border-bottom: 1px solid var(--mg); padding: 1.3rem 0; align-items: center; }
+    .ci-img { width: 75px; height: 95px; background: var(--lg); border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .ci-info { flex: 1; }
+    .ci-name { font-size: .9rem; font-weight: 600; color: var(--blk); }
+    .ci-meta { font-size: .72rem; color: var(--dg); margin-top: 2px; }
+    .qty-ctrl { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .qty-btn { width: 26px; height: 26px; border: 1.5px solid var(--mg); background: none; cursor: pointer; border-radius: 2px; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .qty-btn:hover { background: var(--blk); color: #fff; border-color: var(--blk); }
+    .qty-n { font-size: .88rem; font-weight: 600; min-width: 18px; text-align: center; }
+    .ci-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .ci-price { font-size: .97rem; font-weight: 700; color: var(--blk); }
+    .rm-btn { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--dg); transition: color .2s; }
+    .rm-btn:hover { color: #e00055; }
+    .cart-empty { text-align: center; padding: 4rem 0; color: var(--dg); }
+    .cart-empty .ce-icon { font-size: 3.5rem; margin-bottom: 10px; }
+    .cart-empty h3 { font-size: 1.1rem; font-weight: 700; color: var(--blk); margin-bottom: 6px; }
+    .cart-sum { background: var(--off); border-radius: 4px; padding: 1.8rem; border: 1px solid var(--mg); align-self: start; position: sticky; top: 80px; }
+    .cart-sum h3 { font-size: .88rem; font-weight: 700; color: var(--blk); margin-bottom: 1.3rem; text-transform: uppercase; letter-spacing: .1em; }
+    .sum-line { display: flex; justify-content: space-between; font-size: .84rem; color: var(--ch); margin-bottom: 10px; }
+    .sum-line.tot { font-size: .97rem; font-weight: 700; color: var(--blk); border-top: 1px solid var(--mg); padding-top: 12px; margin-top: 5px; }
+    .coup-row { display: flex; gap: 8px; margin: 14px 0; }
+    .coup-row input { flex: 1; padding: 8px 10px; border: 1.5px solid var(--mg); border-radius: 3px; font-size: .82rem; outline: none; font-family: inherit; }
+    .coup-btn { background: var(--mg); border: none; padding: 8px 12px; border-radius: 3px; font-size: .74rem; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .coup-btn:hover { background: var(--dg); color: #fff; }
+
+    /* FOOTER */
+    footer { background: var(--blk); color: #fff; padding: 3.5rem 8% 1.8rem; }
+    .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .foot-brand p { font-size: .8rem; color: rgba(255,255,255,.4); line-height: 1.8; margin-top: 10px; max-width: 230px; }
+    .foot-col h4 { font-size: .67rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.38); margin-bottom: 14px; }
+    .foot-col ul { list-style: none; }
+    .foot-col li { margin-bottom: 9px; }
+    .foot-col a { font-size: .8rem; color: rgba(255,255,255,.56); cursor: pointer; text-decoration: none; transition: color .2s; }
+    .foot-col a:hover { color: var(--acc); }
+    .foot-bot { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; font-size: .72rem; color: rgba(255,255,255,.28); }
+    .soc-row { display: flex; gap: 10px; }
+    .soc-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.06); border: none; cursor: pointer; color: rgba(255,255,255,.55); font-size: .85rem; transition: all .2s; }
+    .soc-btn:hover { background: var(--acc); color: #fff; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; background: var(--blk); color: #fff; padding: 12px 18px; border-radius: 4px; font-size: .82rem; font-weight: 500; box-shadow: 0 8px 30px rgba(0,0,0,.2); display: flex; align-items: center; gap: 8px; transform: translateY(80px); opacity: 0; transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast-check { color: var(--acc); }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .hero, .about-hero, .contact-wrap { grid-template-columns: 1fr; }
+      .hero-visual, .about-visual { height: 260px; }
+      .cart-wrap { grid-template-columns: 1fr; }
+      .feat-band { grid-template-columns: repeat(2,1fr); }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row, .vals { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .form-row2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="logo" onclick="goTo('home')">TALAL<span>HORES</span></div>
+  <ul class="nav-links">
+    <li><a id="nl-home" class="active" onclick="goTo('home')">Home</a></li>
+    <li><a id="nl-shop" onclick="goTo('shop')">Shop</a></li>
+    <li><a id="nl-about" onclick="goTo('about')">About</a></li>
+    <li><a id="nl-contact" onclick="goTo('contact')">Contact</a></li>
+  </ul>
+  <button class="cart-btn" onclick="goTo('cart')">🛒<span class="cbadge" id="cbadge">0</span></button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">New Collection · 2025</p>
+      <h1>Wear <em>What</em><br>Moves You</h1>
+      <p class="hero-sub">Premium hoodies and t-shirts crafted for everyday comfort — from city streets to wherever life takes you.</p>
+      <div class="cta-row">
+        <button class="btn-prim" onclick="goTo('shop')">Shop Now</button>
+        <button class="btn-out" onclick="goTo('about')">Our Story</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg width="300" height="340" viewBox="0 0 300 340" fill="none">
+        <path d="M75 80L50 105L30 200L40 210L55 210L60 180L60 320H240V180L245 210L260 210L270 200L250 105L225 80Z" fill="#1a1a18"/>
+        <path d="M75 80Q80 88 90 93Q120 100 150 100Q180 100 210 93Q220 88 225 80L222 73Q212 82 185 90Q150 95 115 90Q88 82 78 73Z" fill="#111"/>
+        <path d="M90 70Q150 18 210 70L207 77Q150 28 93 77Z" fill="#0a0a09"/>
+        <path d="M103 72Q150 36 197 72Q170 58 150 56Q130 58 103 72Z" fill="rgba(255,255,255,0.1)"/>
+        <rect x="105" y="188" width="90" height="52" rx="3" fill="rgba(0,0,0,0.22)"/>
+        <line x1="134" y1="76" x2="130" y2="128" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+        <line x1="166" y1="76" x2="170" y2="128" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+      </svg>
+      <div class="hero-badge">
+        <small>Free shipping over</small>
+        <strong>$60 Orders</strong>
+      </div>
+    </div>
+  </section>
+
+  <div class="feat-band">
+    <div class="feat-item"><div class="feat-icon">✦</div><div class="feat-title">Premium Cotton</div><div class="feat-desc">100% organic, built to last</div></div>
+    <div class="feat-item"><div class="feat-icon">⚡</div><div class="feat-title">Fast Delivery</div><div class="feat-desc">Ships in 1–3 business days</div></div>
+    <div class="feat-item"><div class="feat-icon">↩</div><div class="feat-title">Easy Returns</div><div class="feat-desc">30-day hassle-free policy</div></div>
+    <div class="feat-item"><div class="feat-icon">◎</div><div class="feat-title">Ethically Made</div><div class="feat-desc">Fair-wage certified production</div></div>
+  </div>
+
+  <div class="sec-head">
+    <p class="eyebrow">Best Sellers</p>
+    <h2>Shop the Collection</h2>
+    <p>Our most-loved pieces, restocked and ready.</p>
+  </div>
+  <div class="filter-strip" id="home-filters">
+    <button class="pill active" onclick="homeFilter('all',this)">All</button>
+    <button class="pill" onclick="homeFilter('hoodie',this)">Hoodies</button>
+    <button class="pill" onclick="homeFilter('tshirt',this)">T-Shirts</button>
+    <button class="pill" onclick="homeFilter('sale',this)">Sale</button>
+  </div>
+  <div class="prod-grid" id="home-grid"></div>
+
+  <footer>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="logo">TALAL<span>HORES</span></div>
+        <p>Quality threads for every chapter. Crafted for those who move through life with intention.</p>
+      </div>
+      <div class="foot-col"><h4>Shop</h4><ul><li><a onclick="goTo('shop')">Hoodies</a></li><li><a onclick="goTo('shop')">T-Shirts</a></li><li><a onclick="goTo('shop')">New Arrivals</a></li><li><a onclick="goTo('shop')">Sale</a></li></ul></div>
+      <div class="foot-col"><h4>Help</h4><ul><li><a href="#">Size Guide</a></li><li><a href="#">Shipping Info</a></li><li><a href="#">Returns</a></li><li><a onclick="goTo('contact')">Contact Us</a></li></ul></div>
+      <div class="foot-col"><h4>Company</h4><ul><li><a onclick="goTo('about')">About Us</a></li><li><a href="#">Sustainability</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2025 UrbanThread. All rights reserved.</span>
+      <div class="soc-row"><button class="soc-btn">𝕏</button><button class="soc-btn">◉</button><button class="soc-btn">f</button></div>
+    </div>
+  </footer>
+</div>
+
+<!-- SHOP -->
+<div class="page" id="page-shop">
+  <div class="sec-head" style="padding-top:2.8rem"><p class="eyebrow">Full Collection</p><h2>All Products</h2></div>
+  <div class="filter-strip" id="shop-filters">
+    <button class="pill active" onclick="shopFilter('all',this)">All</button>
+    <button class="pill" onclick="shopFilter('hoodie',this)">Hoodies</button>
+    <button class="pill" onclick="shopFilter('tshirt',this)">T-Shirts</button>
+    <button class="pill" onclick="shopFilter('sale',this)">On Sale</button>
+  </div>
+  <div class="prod-grid" id="shop-grid"></div>
+  <footer><div class="foot-bot" style="border:none;padding:1.5rem 0 0"><span>© 2025 UrbanThread.</span></div></footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-txt">
+      <h1>Clothes That<br>Mean Something</h1>
+      <p>UrbanThread was born in 2018 from a simple belief: everyday clothing should feel as good as it looks, without compromise on ethics or quality.</p>
+      <p>Every piece starts with the finest organic cotton, cut in fair-wage facilities, designed to outlast trends and fast fashion alike.</p>
+      <button class="btn-prim" onclick="goTo('shop')" style="width:fit-content;margin-top:1rem">Browse Collection</button>
+    </div>
+    <div class="about-visual">🧵</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">12K+</div><div class="stat-l">Happy Customers</div></div>
+    <div class="stat"><div class="stat-n">48+</div><div class="stat-l">Products Available</div></div>
+    <div class="stat"><div class="stat-n">7 yrs</div><div class="stat-l">In Business</div></div>
+  </div>
+  <div class="vals">
+    <div class="val-card"><div class="val-icon">🌱</div><div class="val-title">Sustainably Sourced</div><div class="val-txt">All our cotton is GOTS-certified organic. We trace every thread back to the field it came from.</div></div>
+    <div class="val-card"><div class="val-icon">🤝</div><div class="val-title">Fairly Produced</div><div class="val-txt">Every factory partner is audited annually for fair wages, safe conditions, and ethical practices.</div></div>
+    <div class="val-card"><div class="val-icon">♻️</div><div class="val-title">Zero Waste Goal</div><div class="val-txt">Our packaging is 100% recycled. By 2026, we aim for zero production waste through circular design.</div></div>
+  </div>
+  <footer><div class="foot-bot" style="border:none;padding:1.5rem 0 0"><span>© 2025 UrbanThread.</span></div></footer>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="contact-wrap">
+    <div class="contact-l">
+      <h2>Get in<br>Touch</h2>
+      <p>Have a question about an order, sizing, or want to say hello? We reply within 24 hours.</p>
+      <div class="c-det"><span>📍</span><span>142 Thread Lane, New York, NY 10001</span></div>
+      <div class="c-det"><span>✉️</span><span>hello@urbanthread.co</span></div>
+      <div class="c-det"><span>📞</span><span>+1 (212) 555-0192</span></div>
+    </div>
+    <div class="contact-r">
+      <h3>Send a Message</h3>
+      <div class="form-row2">
+        <div class="fgrp"><label>First Name</label><input type="text" placeholder="Alex"/></div>
+        <div class="fgrp"><label>Last Name</label><input type="text" placeholder="Jordan"/></div>
+      </div>
+      <div class="fgrp"><label>Email</label><input type="email" placeholder="alex@email.com"/></div>
+      <div class="fgrp"><label>Subject</label>
+        <select><option>Order Inquiry</option><option>Returns & Exchanges</option><option>Size Help</option><option>Wholesale</option><option>Other</option></select>
+      </div>
+      <div class="fgrp"><label>Message</label><textarea placeholder="Tell us how we can help..."></textarea></div>
+      <button class="form-sub" onclick="showToast('Message sent! We\'ll reply within 24 hours ✓')">Send Message</button>
+    </div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="page" id="page-cart">
+  <div class="cart-wrap">
+    <div>
+      <h2 class="cart-h">Your Cart</h2>
+      <div id="cart-list"></div>
+    </div>
+    <div class="cart-sum">
+      <h3>Order Summary</h3>
+      <div class="sum-line"><span>Subtotal</span><span id="s-sub">$0.00</span></div>
+      <div class="sum-line"><span>Shipping</span><span>Free</span></div>
+      <div class="sum-line"><span>Tax (8%)</span><span id="s-tax">$0.00</span></div>
+      <div class="coup-row"><input type="text" placeholder="Coupon code"/><button class="coup-btn">Apply</button></div>
+      <div class="sum-line tot"><span>Total</span><span id="s-tot">$0.00</span></div>
+      <button class="btn-prim" style="width:100%;margin-top:16px;padding:13px" onclick="showToast('Checkout coming soon! 🛍️')">Checkout</button>
+      <button class="btn-out" style="width:100%;margin-top:8px;padding:13px" onclick="goTo('shop')">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-check">✓</span><span id="toast-msg">Done!</span></div>
+
+<script>
+const PRODUCTS = [
+  {id:1,name:"Classic Pullover Hoodie",type:"hoodie",tag:"Best Seller",price:79,colors:["#111","#5a8a6e","#8a6e5a"],fill:"#1a1a18"},
+  {id:2,name:"Essential Crew Tee",type:"tshirt",tag:"New",price:34,colors:["#f2f2f0","#111","#6e7a8a"],fill:"#f4f4f2"},
+  {id:3,name:"Heavyweight Zip-Up",type:"hoodie",tag:"Sale",price:89,old:119,colors:["#2a2a28","#6e5a8a"],fill:"#2a2a28"},
+  {id:4,name:"Graphic Drop Tee",type:"tshirt",tag:"New",price:42,colors:["#f2f2f0","#111"],fill:"#111"},
+  {id:5,name:"Oversized Fleece Hood",type:"hoodie",price:99,colors:["#c8a96e","#111","#ddd"],fill:"#c8a96e"},
+  {id:6,name:"Vintage Wash Tee",type:"tshirt",tag:"Sale",price:28,old:38,colors:["#8a9a7a","#b0a090"],fill:"#8a9a7a"},
+  {id:7,name:"Tech Fleece Hoodie",type:"hoodie",price:109,colors:["#111","#1a2a3a"],fill:"#1a2a3a"},
+  {id:8,name:"Pocket Tee Relaxed",type:"tshirt",price:36,colors:["#f2f2f0","#e8e0d8","#111"],fill:"#e8e0d8"},
+];
+let cart = [];
+
+function hoodieSVG(fill, size=110){
+  return `<svg width="${size}" height="${Math.round(size*1.15)}" viewBox="0 0 160 185" fill="none">
+    <path d="M40 45L20 60L10 130L20 135L30 135L35 105L35 178H125V105L130 135L140 135L150 130L140 60L120 45Z" fill="${fill}"/>
+    <path d="M40 45Q80 17 120 45L117 51Q80 26 43 51Z" fill="${fill}" opacity=".85"/>
+    <path d="M56 47Q80 30 104 47Q88 39 80 38Q72 39 56 47Z" fill="rgba(255,255,255,0.12)"/>
+    <rect x="55" y="116" width="50" height="28" rx="2" fill="rgba(0,0,0,0.2)"/>
+    <line x1="73" y1="50" x2="70" y2="80" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+    <line x1="87" y1="50" x2="90" y2="80" stroke="rgba(255,255,255,0.22)" stroke-width="1.5"/>
+  </svg>`;
+}
+function tshirtSVG(fill, size=110){
+  const s = (fill==="#f4f4f2"||fill==="#e8e0d8") ? "#ddd" : "rgba(255,255,255,0.18)";
+  return `<svg width="${size}" height="${Math.round(size*0.97)}" viewBox="0 0 160 155" fill="none">
+    <path d="M50 30L20 55L15 90L35 95V148H125V95L145 90L140 55L110 30Q97 44 80 44Q63 44 50 30Z" fill="${fill}" stroke="${s}" stroke-width="1.2"/>
+    <path d="M50 30Q63 44 80 44Q97 44 110 30L106 27Q95 40 80 40Q65 40 54 27Z" fill="rgba(0,0,0,0.06)"/>
+  </svg>`;
+}
+function svg(p, size){ return p.type==="hoodie" ? hoodieSVG(p.fill,size) : tshirtSVG(p.fill,size); }
+
+function card(p){
+  const dots = p.colors.map((c,i)=>`<div class="cdot${i===0?' sel':''}" style="background:${c}" onclick="selColor(this)"></div>`).join('');
+  const price = p.old ? `<span class="old">$${p.old}</span>$${p.price}` : `$${p.price}`;
+  return `<div class="prod-card">
+    <div class="prod-img">
+      ${p.tag?`<div class="prod-tag">${p.tag}</div>`:''}
+      ${svg(p,110)}
+    </div>
+    <div class="prod-info">
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-type">${p.type==='hoodie'?'Hoodie':'T-Shirt'}</div>
+      <div class="color-dots">${dots}</div>
+      <div class="prod-foot">
+        <div class="prod-price">${price}</div>
+        <button class="btn-add" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function selColor(dot){ dot.closest('.color-dots').querySelectorAll('.cdot').forEach(d=>d.classList.remove('sel')); dot.classList.add('sel'); }
+function renderGrid(id, items){ const el=document.getElementById(id); if(el) el.innerHTML=items.map(card).join(''); }
+function homeFilter(type,btn){ document.querySelectorAll('#home-filters .pill').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderGrid('home-grid', type==='all'?PRODUCTS.slice(0,4):type==='sale'?PRODUCTS.filter(p=>p.tag==='Sale'):PRODUCTS.filter(p=>p.type===type).slice(0,4)); }
+function shopFilter(type,btn){ document.querySelectorAll('#shop-filters .pill').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderGrid('shop-grid', type==='all'?PRODUCTS:type==='sale'?PRODUCTS.filter(p=>p.tag==='Sale'):PRODUCTS.filter(p=>p.type===type)); }
+
+function addToCart(id){ const p=PRODUCTS.find(x=>x.id===id); const ex=cart.find(x=>x.id===id); if(ex) ex.qty++; else cart.push({...p,qty:1}); updateBadge(); showToast(`"${p.name}" added to cart!`); }
+function updateBadge(){ document.getElementById('cbadge').textContent=cart.reduce((a,b)=>a+b.qty,0); }
+function changeQty(id,d){ const i=cart.find(x=>x.id===id); if(!i) return; i.qty=Math.max(1,i.qty+d); renderCart(); updateBadge(); }
+function removeItem(id){ cart=cart.filter(x=>x.id!==id); renderCart(); updateBadge(); }
+
+function renderCart(){
+  const el=document.getElementById('cart-list'); if(!el) return;
+  if(!cart.length){
+    el.innerHTML=`<div class="cart-empty"><div class="ce-icon">🛒</div><h3>Your cart is empty</h3><p>Add some pieces you love!</p><br><button class="btn-prim" onclick="goTo('shop')">Browse Shop</button></div>`;
+  } else {
+    el.innerHTML=cart.map(it=>`<div class="cart-item">
+      <div class="ci-img">${svg(it,55)}</div>
+      <div class="ci-info">
+        <div class="ci-name">${it.name}</div>
+        <div class="ci-meta">${it.type==='hoodie'?'Hoodie':'T-Shirt'} · Size M</div>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(${it.id},-1)">−</button>
+          <span class="qty-n">${it.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${it.id},1)">+</button>
+        </div>
+      </div>
+      <div class="ci-right">
+        <div class="ci-price">$${(it.price*it.qty).toFixed(2)}</div>
+        <button class="rm-btn" onclick="removeItem(${it.id})">✕</button>
+      </div>
+    </div>`).join('');
+  }
+  const sub=cart.reduce((a,b)=>a+b.price*b.qty,0);
+  document.getElementById('s-sub').textContent=`$${sub.toFixed(2)}`;
+  document.getElementById('s-tax').textContent=`$${(sub*.08).toFixed(2)}`;
+  document.getElementById('s-tot').textContent=`$${(sub*1.08).toFixed(2)}`;
+}
+
+function goTo(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const nl=document.getElementById('nl-'+name); if(nl) nl.classList.add('active');
+  window.scrollTo(0,0);
+  if(name==='cart') renderCart();
+}
+
+let toastTimer;
+function showToast(msg){ const t=document.getElementById('toast'); document.getElementById('toast-msg').textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3000); }
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('shadowed',scrollY>30));
+
+renderGrid('home-grid', PRODUCTS.slice(0,4));
+renderGrid('shop-grid', PRODUCTS);
+</script>
+</body>
+</html>
